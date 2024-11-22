@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-Tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時鐘</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('https://images.pexels.com/photos/1629236/pexels-photo-1629236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-repeat: no-repeat;
+            background-size: 100% 100vh;
+        }
+
+        @keyframes box-change {
+            0% {
+                box-shadow: inset 0 0 50px red,
+                    0 0 50px red;
+            }
+
+            16% {
+                box-shadow: inset 0 0 50px orange,
+                    0 0 50px orange;
+            }
+
+            33% {
+                box-shadow: inset 0 0 50px yellow,
+                    0 0 50px yellow;
+            }
+
+            49% {
+                box-shadow: inset 0 0 50px green,
+                    0 0 50px green;
+            }
+
+            65% {
+                box-shadow: inset 0 0 50px blue,
+                    0 0 50px blue;
+            }
+
+            81% {
+                box-shadow: inset 0 0 50px indigo,
+                    0 0 50px indigo;
+            }
+
+            100% {
+                box-shadow: inset 0 0 50px purple,
+                    0 0 50px purple;
+            }
+        }
+
+        @keyframes filter-changeTime {
+            0% {
+                filter: drop-shadow(5px 5px 5px red);
+            }
+
+            16% {
+                filter: drop-shadow(5px 5px 5px orange);
+            }
+
+            33% {
+                filter: drop-shadow(5px 5px 5px yellow);
+            }
+
+            49% {
+                filter: drop-shadow(5px 5px 5px green);
+            }
+
+            65% {
+                filter: drop-shadow(5px 5px 5px blue);
+            }
+
+            81% {
+                filter: drop-shadow(5px 5px 5px indigo);
+            }
+
+            100% {
+                filter: drop-shadow(5px 5px 5px purple);
+            }
+        }
+
+        @keyframes filter-change {
+            0% {
+                filter: drop-shadow(0px 0px 8px red);
+            }
+
+            16% {
+                filter: drop-shadow(0px 0px 8px orange);
+            }
+
+            33% {
+                filter: drop-shadow(0px 0px 8px yellow);
+            }
+
+            49% {
+                filter: drop-shadow(0px 0px 8px green);
+            }
+
+            61% {
+                filter: drop-shadow(0px 0px 8px blue);
+            }
+
+            81% {
+                filter: drop-shadow(0px 0px 8px indigo);
+            }
+
+            100% {
+                filter: drop-shadow(0px 0px 8px purple);
+            }
+        }
+
+        #contanier {
+            width: 50vh;
+            height: 50vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #date-box {
+            width: 100%;
+            height: 20%;
+            position: absolute;
+            top: -25%;
+            text-align: center;
+        }
+
+        #date {
+            font-size: 5rem;
+            font-family: Calibri;
+            font-weight: bolder;
+            color: white;
+            transition: 1s;
+            animation: filter-changeTime 30s infinite;
+        }
+
+        #clock {
+            border: 6px solid white;
+            border-radius: 50%;
+            width: 80%;
+            height: 80%;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 1s;
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            animation: box-change 30s infinite;
+        }
+
+        .clock-scale {
+            width: 1px;
+            height: 12px;
+            background: white;
+            position: absolute;
+        }
+
+        #clock::before {
+            content: '';
+            border-radius: 50%;
+            background-image: linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, black 1px, transparent 1px);
+            background-size: 1% 1%;
+            background-repeat: repeat-x repeat-y;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -2;
+        }
+
+        #box-center {
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+        .clock-num {
+            width: 2.2rem;
+            height: 2.2rem;
+            line-height: 2.2rem;
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        #clock:hover {
+            backdrop-filter: blur(5px);
+            transform: translateX(-50%) scale(1.2);
+        }
+
+        #secondHand {
+            border-radius: 50px 50px;
+            background: linear-gradient(to right, transparent 50%, white 50%);
+            width: 80%;
+            height: 2px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+            animation: filter-change 30s infinite;
+        }
+
+        #minuteHand {
+            border-radius: 50px 50px;
+            background: linear-gradient(to right, transparent 50%, lightgreen 50%);
+            width: 80%;
+            height: 3%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: -1;
+            animation: filter-change 30s infinite;
+        }
+
+        #hourHand {
+            border-radius: 50px 50px;
+            background: linear-gradient(to right, transparent 50%, lightblue 50%);
+            width: 50%;
+            height: 3%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 0;
+            animation: filter-change 30s infinite;
+        }
+
+        #dot {
+            background: white;
+            border-radius: 50%;
+            width: 8%;
+            height: 8%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            animation: filter-change 30s infinite;
+        }
+
+        #time-box {
+            width: 100%;
+            height: 20%;
+            position: absolute;
+            top: 100%;
+            text-align: center;
+        }
+
+        #time {
+            font-size: 5rem;
+            font-family: Calibri;
+            color: white;
+            transition: 1s;
+            animation: filter-changeTime 30s infinite;
+        }
+
+        #btns {
+            text-align: center;
+            margin: 30px;
+        }
+
+        .white-border {
+            box-shadow: 0 0 20px white;
+        }
+
+        #btns input {
+            width: 80px;
+            height: 50px;
+            font-size: 1.5rem;
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #watch-btns {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            display: none;
+        }
+
+        #watch-btns input {
+            width: 80px;
+            height: 50px;
+            font-size: 1.5rem;
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #btn-watch-pause {
+            position: absolute;
+            left: calc(50% - 82px);
+            visibility: hidden;
+        }
+
+        #watch-time {
+            width: 100%;
+            font-size: 5rem;
+            font-family: Calibri;
+            color: white;
+            transition: 1s;
+            animation: filter-changeTime 30s infinite;
+            position: absolute;
+            top: 0;
+            opacity: 0;
+        }
+
+        input {
+            border: 1px solid lightskyblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contanier">
+        <div id="date-box">
+            <p id="date"></p>
+        </div>
+        <div id="clock">
+            <div id="dot"></div>
+            <div id="minuteHand"></div>
+            <div id="hourHand"></div>
+            <div id="secondHand"></div>
+            <!-- 中心點，用來幫助定位數字1~12 -->
+            <div id="box-center"></div>
+        </div>
+        <div id="time-box">
+            <p id="time"></p>
+            <p id="watch-time">00:00:00</p>
+            <div id="watch-btns">
+                <input type="button" id="btn-watch-start" value="開始">
+                <input type="button" id="btn-watch-pause" value="暫停">
+                <input type="button" id="btn-watch-reset" value="重置">
+            </div>
+        </div>
+    </div>
+    <div id="btns">
+        <input type="button" id="btn-clock" value="時鐘" class="white-border" disabled="true">
+        <input type="button" id="btn-watch" value="碼表">
+    </div>
+    <script>
+        const time = document.getElementById('time')
+        const date = document.getElementById('date')
+        const secondHand = document.getElementById('secondHand')
+        const minuteHand = document.getElementById('minuteHand')
+        const hourHand = document.getElementById('hourHand')
+        const boxCenter = document.getElementById('box-center')
+        const btnClock = document.getElementById('btn-clock')
+        const btnWatch = document.getElementById('btn-watch')
+        const divWatchBtns = document.getElementById('watch-btns')
+        const btnWatchStart = document.getElementById('btn-watch-start')
+        const btnWatchPause = document.getElementById('btn-watch-pause')
+        const btnWatchReset = document.getElementById('btn-watch-reset')
+        const watchTime = document.getElementById('watch-time')
+        let countTime = 0
+
+        // 生成時鐘上1~12數字
+        for (let i = 1; i <= 12; i++) {
+            const clockNum = document.createElement('div')
+            boxCenter.append(clockNum)
+            clockNum.classList.add('clock-num')
+            clockNum.innerText = i
+            clockNum.style.top = `${(boxCenter.offsetWidth - 18) * (Math.round(Math.sin((i * 30 - 90) * Math.PI / 180) * 10000) / 10000)}px`
+            clockNum.style.left = `${(boxCenter.offsetWidth - 18) * (Math.round(Math.cos((i * 30 - 90) * Math.PI / 180) * 10000) / 10000)}px`
+        }
+        // 生成刻度
+        for (let i = 1; i <= 60; i++) {
+            const clockScale = document.createElement('div')
+            boxCenter.append(clockScale)
+            clockScale.classList.add('clock-scale')
+            clockScale.style.top = `${(boxCenter.offsetWidth) * (Math.round(Math.sin(i * 6 * Math.PI / 180) * 10000) / 10000)}px`
+            clockScale.style.left = `${(boxCenter.offsetWidth) * (Math.round(Math.cos(i * 6 * Math.PI / 180) * 10000) / 10000)}px`
+            clockScale.style.transform = `translate(-50%, -50%) rotate(${i * 6 - 90}deg)`
+        }
+
+        // 設定時鐘指針旋轉及時間顯示
+        const setDate = () => {
+            const now = new Date()
+            const h = now.getHours()
+            const m = now.getMinutes()
+            const s = now.getSeconds()
+            time.innerText = now.toTimeString().slice(0, 8)
+            date.innerText = now.toLocaleDateString()
+            secondHand.style.transform = `translate(-50%, -50%) rotate(${s * 6 - 90}deg)`
+            minuteHand.style.transform = `translate(-50%, -50%) rotate(${(m * 60 + s) / 10 - 90}deg)`
+            hourHand.style.transform = `translate(-50%, -50%) rotate(${((h % 12) * 3600 + m * 60 + s) / 120 - 90}deg)`
+        }
+
+        // 碼表開始跑
+        const watchStrat = () => {
+            countTime++
+            const wms = countTime % 100
+            const ws = Math.floor(countTime / 100) % 60
+            const wm = Math.floor(countTime / 6000)
+
+            watchTime.innerText = `${wm}`.padStart(2, '0') + ':' + `${ws}`.padStart(2, '0') + ':' + `${wms}`.padStart(2, '0')
+            secondHand.style.transform = `translate(-50%, -50%) rotate(${countTime % 6000 * 0.06 - 90}deg)`
+            minuteHand.style.transform = `translate(-50%, -50%) rotate(${(wm * 60 + ws) / 10 - 90}deg)`
+        }
+
+        // 碼表歸零
+        const watchReset = () => {
+            countTime = 0
+            watchTime.innerText = '00:00:00'
+            secondHand.style.transform = 'translate(-50%, -50%) rotate(-90deg)'
+            minuteHand.style.transform = 'translate(-50%, -50%) rotate(-90deg)'
+        }
+
+        // 預設跑時鐘
+        setDate()
+
+        // 時鐘的計時器
+        let setDateInt = setInterval(setDate, 500)
+        // 碼表的計時器
+        let watchStartInt
+
+        // 切換碼表
+        btnWatch.addEventListener('click', function () {
+            // 元素的顯示切換
+            btnClock.disabled = false
+            btnWatch.disabled = true
+            btnClock.classList.remove('white-border')
+            btnWatch.classList.add('white-border')
+            divWatchBtns.style.display = 'block'
+            date.style.opacity = '0'
+            watchTime.style.opacity = '1'
+            time.style.opacity = '0'
+            hourHand.style.opacity = '0'
+
+            clearInterval(setDateInt)
+            watchReset()
+        })
+
+        // 切換時鐘
+        btnClock.addEventListener('click', function () {
+            // 元素的顯示切換
+            btnClock.disabled = true
+            btnWatch.disabled = false
+            btnClock.classList.add('white-border')
+            btnWatch.classList.remove('white-border')
+            divWatchBtns.style.display = 'none'
+            date.style.opacity = '1'
+            watchTime.style.opacity = '0'
+            time.style.opacity = '1'
+            hourHand.style.opacity = '1'
+            btnWatchStart.style.visibility = 'visible'
+            btnWatchPause.style.visibility = 'hidden'
+
+            clearInterval(watchStartInt)
+            setDate()
+            setDateInt = setInterval(setDate, 500)
+        })
+
+        // 按下開始碼表
+        btnWatchStart.addEventListener('click', function () {
+            btnWatchStart.style.visibility = 'hidden'
+            btnWatchPause.style.visibility = 'visible'
+            watchStartInt = setInterval(watchStrat, 10)
+        })
+
+        // 按下暫停碼表
+        btnWatchPause.addEventListener('click', function () {
+            btnWatchStart.style.visibility = 'visible'
+            btnWatchPause.style.visibility = 'hidden'
+            clearInterval(watchStartInt)
+        })
+
+        // 按下重置碼表
+        btnWatchReset.addEventListener('click', function () {
+            watchReset()
+        })
+    </script>
+</body>
+
+</html>
